@@ -27,13 +27,11 @@ module.exports = async (event, context) => {
     map = await hz.getMap('map');
   }
 
-  const number = between(1, 100000);
+  const number = between(1, 1000000);
   await map.put(`${number}`, `value-${number}`);
   const size = await map.size();
-  const result = {
-    'body': `${size}`,
-  }
+  
   return context
     .status(200)
-    .succeed(result)
+    .succeed({"size" : size})
 }
