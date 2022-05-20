@@ -2,10 +2,10 @@
 :templates-url: templates:ROOT:page$/
 :page-layout: tutorial
 :page-product: imdg
-:page-categories: FaaS, Kubernetes
+:page-categories: Cloud Native
 :page-lang: java, node, python
 :page-est-time: 5-10 mins
-:description: This tutorial will get you started with using Hazelcast clients in OpenFaaS functions for connecting to Hazelcast clusters on Kubernetes.
+:description: Use Hazelcast clients in OpenFaaS functions to connect to Hazelcast clusters on Kubernetes.
 
 {description}
 
@@ -32,7 +32,7 @@ In the tutorial, we will deploy OpenFaaS on Kubernetes. We will also create a Ha
 - https://github.com/rakyll/hey#installation[hey] (optional)
 
 
-== Install and Configure OpenFaaS on Kubernetes
+== Step 1. Install and Configure OpenFaaS on Kubernetes
 
 In this tutorial, we are going to use Minikube as the Kubernetes environment.
 
@@ -81,7 +81,7 @@ prometheus-6f699b4d87-jshv8         1/1     Running   0          17m
 queue-worker-5f6cb648db-hgwgq       1/1     Running   0          17m
 ```
 
-=== Log in to OpenFaaS
+=== Log into OpenFaaS
 
 Wait for gateway to be ready.
 
@@ -133,7 +133,7 @@ helm repo add hazelcast https://hazelcast-charts.s3.amazonaws.com/
 helm repo update
 helm install hz-hazelcast hazelcast/hazelcast
 ```
-== Create Function with Hazelcast Client
+== Step 2. Create a Function with the Hazelcast Client
 
 OpenFaaS CLI provides function templates for different runtime environments and watchdogs. We are going to implement the functions in Java, Python and NodeJs. We will be using both `of-watchdog` and `Classic Watchdog`. By using `of-watchdog` we will preserve the database connections, so our clients will not need to connect to the cluster after each function call. You can find more information on watchdogs https://docs.openfaas.com/architecture/watchdog/[here].
 
@@ -196,7 +196,7 @@ faas-cli up -f hz-client-node-ofwatchdog.yml
 --
 ====
 
-== Trigger Functions 
+== Step 3. Trigger the Functions 
 
 Every deployed function will have http triggers at `<gateway_address>/function/<function-name>`. 
 
