@@ -1,12 +1,13 @@
-:github-address: https://github.com/hazelcast-guides/openfaas-hz-client
-
-:templates-url: templates:ROOT:page$/
-
 = Use Hazelcast with OpenFaaS
+:templates-url: templates:ROOT:page$/
+:page-layout: tutorial
+:page-product: imdg
+:page-categories: Cloud Native
+:page-lang: java, node, python
+:page-est-time: 5-10 mins
+:description: Use Hazelcast clients in OpenFaaS functions to connect to Hazelcast clusters on Kubernetes.
 
-This guide will get you started with using Hazelcast Clients in OpenFaaS functions for connecting to Hazelcast clusters on Kubernetes.
-
-include::{templates-url}/link-to-repo.adoc[]
+{description}
 
 == What You Will Learn
 
@@ -14,9 +15,9 @@ With the popularity of Function as a Service (FaaS) rising, Kubernetes was also 
 
 Serverless functions are designed to be stateless, however this slows down the functions for some use cases, generally connection set-up time holds a considerable portion of the response time. OpenFaaS with the use of `of-watchdog`, partially solves this problem by allowing functions to be able to hold their states between calls. This approach helps Hazelcast because now the clients in the functions can persist their connection with the cluster between function calls, thus allowing faster response times.
 
-In the guide, we will deploy OpenFaaS on Kubernetes. We will also create a Hazelcast cluster and deploy OpenFaaS functions with Hazelcast clients in them. We will use Java, Python and Nodejs clients and we will compare the response times of functions created with `of-watchdog` and `Classical Watchdog`.
+In the tutorial, we will deploy OpenFaaS on Kubernetes. We will also create a Hazelcast cluster and deploy OpenFaaS functions with Hazelcast clients in them. We will use Java, Python and Nodejs clients and we will compare the response times of functions created with `of-watchdog` and `Classical Watchdog`.
 
-== Prerequisites
+== Before you Begin
 
 - A running Kubernetes cluster, for example https://v1-18.docs.kubernetes.io/docs/tasks/tools/install-minikube/[minikube]
 
@@ -31,9 +32,9 @@ In the guide, we will deploy OpenFaaS on Kubernetes. We will also create a Hazel
 - https://github.com/rakyll/hey#installation[hey] (optional)
 
 
-== Install and Configure OpenFaaS on Kubernetes
+== Step 1. Install and Configure OpenFaaS on Kubernetes
 
-In this guide we are going to use Minikube as the Kubernetes environment.
+In this tutorial, we are going to use Minikube as the Kubernetes environment.
 
 We are going to install OpenFaaS on Minikube using Helm CLI. We start by adding two namespaces `openfaas` and `openfaas-fn`. If you want to use different namespaces edit the following file used in the command below.
 
@@ -55,7 +56,7 @@ You can expose the OpenFaaS gateway with different resources. Update the `helm u
 - LoadBalancer, add --set serviceType=LoadBalancer
 - IngressController, add --set ingress.enabled=true
 
-When NodePort is used you can access the gateway by using `kubectl port-forward`. In this guide, we are going to use NodePort.
+When NodePort is used you can access the gateway by using `kubectl port-forward`. In this tutorial, we are going to use NodePort.
 
 Now deploy OpenFaaS onto Kubernetes.
 
@@ -80,7 +81,7 @@ prometheus-6f699b4d87-jshv8         1/1     Running   0          17m
 queue-worker-5f6cb648db-hgwgq       1/1     Running   0          17m
 ```
 
-=== Log-in to OpenFaaS
+=== Log into OpenFaaS
 
 Wait for gateway to be ready.
 
@@ -132,7 +133,7 @@ helm repo add hazelcast https://hazelcast-charts.s3.amazonaws.com/
 helm repo update
 helm install hz-hazelcast hazelcast/hazelcast
 ```
-== Create Function with Hazelcast Client
+== Step 2. Create a Function with the Hazelcast Client
 
 OpenFaaS CLI provides function templates for different runtime environments and watchdogs. We are going to implement the functions in Java, Python and NodeJs. We will be using both `of-watchdog` and `Classic Watchdog`. By using `of-watchdog` we will preserve the database connections, so our clients will not need to connect to the cluster after each function call. You can find more information on watchdogs https://docs.openfaas.com/architecture/watchdog/[here].
 
@@ -195,7 +196,7 @@ faas-cli up -f hz-client-node-ofwatchdog.yml
 --
 ====
 
-== Trigger Functions 
+== Step 3. Trigger the Functions 
 
 Every deployed function will have http triggers at `<gateway_address>/function/<function-name>`. 
 
@@ -296,10 +297,10 @@ Comparing the two deployed versions for `of-watchdog` and `Classic Watchdog`, yo
 
 == Summary
 
-In this guide we deployed OpenFaaS on Kubernetes then we created a Hazelcast cluster for our Hazelcast clients in functions. We first used `of-watchdog` as the watchdog for our functions. After seeing the results of `of-watchdog`, we deployed our functions with `Classic Watchdog`. Comparing these two we stated using `of-watchdog` with Hazelcast Clients is by far the better option.
+In this tutorial we deployed OpenFaaS on Kubernetes then we created a Hazelcast cluster for our Hazelcast clients in functions. We first used `of-watchdog` as the watchdog for our functions. After seeing the results of `of-watchdog`, we deployed our functions with `Classic Watchdog`. Comparing these two we stated using `of-watchdog` with Hazelcast clients is by far the better option.
 
 == See Also
 
-- xref:kubernetes:ROOT:index.adoc[Deploy Hazelcast Cluster on Kubernetes]
+- xref:kubernetes.adoc[]
 
-- xref:kubernetes-ssl:ROOT:index.adoc[Enable SSL between Hazelcast Members and Clients on Kubernetes]
+- xref:kubernetes-ssl.adoc[]
